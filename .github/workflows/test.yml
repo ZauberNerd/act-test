@@ -6,43 +6,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "build"
-
-  setup:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - run: echo "setup"
-
-  test:
-    runs-on: ubuntu-latest
-    needs: [setup]
-    steps:
-      - run: echo "test"
-      - run: exit 1
-
-  teardown:
-    runs-on: ubuntu-latest
-    needs: [test]
-    if: ${{ always() }}
-    steps:
-      - run: echo "teardown"
-
-  run-if-build:
-    runs-on: ubuntu-latest
-    needs: [test]
-    if: failure()
-    steps:
-      - run: echo "run-if-build"
-
-  after-teardown:
-    runs-on: ubuntu-latest
-    needs: [teardown]
-    steps:
-      - run: echo "after teardown"
-
-  after-test:
-    runs-on: ubuntu-latest
-    needs: [test]
-    steps:
-      - run: echo "after test"
+      - run: echo ::notice file=./.github/workflows/test.yml,line=1,endLine=3,title=blah::something is wrong
+      - run: echo ::notice::another notice without file
+      - run: echo "::warning file=./.github/workflows/test.yml,line=1,col=5,endColumn=7::Missing semicolon"
+      - run: echo "::warning::Missing semicolon with no file"
+      - run: echo "::error file=./.github/workflows/test.yml,line=1,col=5,endColumn=7::Missing semicolon"
+      - run: echo "::error::Missing semicolon"
+      - name: disable workflow commands
+        run: |
+          echo '::warning:: this is a warning'
+          echo "::stop-commands::`echo -n ${{ github.token }} | sha256sum | head -c 64`"
+          echo '::warning:: this will NOT be a warning'
+          echo "::`echo -n ${{ github.token }} | sha256sum | head -c 64`::"
+          echo '::warning:: this is a warning again'
+      - name: toggle workflow command echoing
+        run: |
+          echo '::set-output name=action_echo::disabled'
+          echo '::echo::on'
+          echo '::set-output name=action_echo::enabled'
+          echo '::echo::off'
+          echo '::set-output name=action_echo::disabled'
