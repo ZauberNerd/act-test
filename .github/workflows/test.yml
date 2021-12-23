@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "build"
+      - run: env
 
   setup:
     runs-on: ubuntu-latest
