@@ -10,5 +10,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: echo "pull_request.labeled with an open PR"
+      - run: echo "pull_request.labeled - workflow changed on master"
       - run: env
