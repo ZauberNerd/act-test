@@ -1,0 +1,18 @@
+name: 'icecream'
+description: 'Sets up either an icecream scheduler or an icecream build node'
+inputs:
+  scheduler-host:
+    description: 'Hostname of the icecream scheduler'
+    required: true
+  is-scheduler:
+    description: 'Start an icecream scheduler on this machine'
+    required: false
+    default: 'false'
+  is-node:
+    description: 'Start an icecream build node on this machine'
+    required: false
+    default: 'true'
+runs:
+  using: 'node16'
+  main: 'dist/main.js'
+  post: 'dist/post.js'

@@ -1,0 +1,16 @@
+name: 'Tailscale VPN'
+description: 'Sets up a tailscale VPN client and connects it to your network'
+inputs:
+  tailscale-auth-key:
+    description: 'A Tailscale authentication key (https://tailscale.com/kb/1085/auth-keys/)'
+    required: true
+  tailscale-api-key:
+    description: 'A Tailscale API key (removes the node from your network when the action exits, this is faster than using ephemeral keys)'
+    required: false
+  tailscale-network-name:
+    description: 'A Tailscale network name "tailnet" (must be provided if used in combination with an API key)'
+    required: false
+runs:
+  using: 'node16'
+  main: 'dist/main.js'
+  post: 'dist/post.js'
