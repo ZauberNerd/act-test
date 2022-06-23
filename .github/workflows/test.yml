@@ -1,15 +1,29 @@
-name: CI
+name: test
 
 on:
-  pull_request:
-    types:
-      - labeled
-      - unlabeled
+  push:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  job1:
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - run: echo "pull_request.labeled - workflow changed on master"
-      - run: env
+      - run: curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+      - run: curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+      - run: sudo apt-get -y update
+      - run: sudo apt-get -yqq install tailscale
+      - run: sudo hostnamectl set-hostname job1
+      - run: sudo tailscale up --authkey ${{ secrets.tailscale_key }}
+      - run: sleep 60
+      - run: ping job2 -c 20
+
+
+  job2:
+    runs-on: ubuntu-20.04
+    steps:
+      - run: curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+      - run: curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+      - run: sudo apt-get -y update
+      - run: sudo apt-get -yqq install tailscale
+      - run: sudo hostnamectl set-hostname job2
+      - run: sudo tailscale up --authkey ${{ secrets.tailscale_key }}
+      - run: sleep 300
