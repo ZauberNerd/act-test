@@ -4,26 +4,66 @@ on:
   push:
 
 jobs:
-  job1:
+  scheduler:
     runs-on: ubuntu-20.04
     steps:
-      - run: curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
-      - run: curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
-      - run: sudo apt-get -y update
-      - run: sudo apt-get -yqq install tailscale
-      - run: sudo hostnamectl set-hostname job1
+      - name: set hostname to scheduler
+        run: sudo hostnamectl set-hostname scheduler
+      - name: setup tailscale
+        run: |
+          curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+          curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+          sudo apt-get -y update
+          sudo apt-get -yqq install tailscale
       - run: sudo tailscale up --authkey ${{ secrets.tailscale_key }}
-      - run: sleep 60
-      - run: ping job2 -c 20
+      - name: setup icecc
+        run: |
+          sudo apt-get -yqq install icecc
+          sudo sed -i 's/ICECC_NETNAME=""/ICECC_NETNAME="act-test"/' /etc/icecc/icecc.conf
+          sudo sed -i 's/ICECC_SCHEDULER_HOST=""/ICECC_SCHEDULER_HOST="scheduler"/' /etc/icecc/icecc.conf
+          echo "/usr/libexec/icecc/bin" >> $GITHUB_PATH
+          sudo systemctl stop iceccd.service
+          sudo systemctl start icecc-scheduler.service
+      - run: sleep 300
 
-
-  job2:
+  daemon1:
     runs-on: ubuntu-20.04
     steps:
-      - run: curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
-      - run: curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
-      - run: sudo apt-get -y update
-      - run: sudo apt-get -yqq install tailscale
-      - run: sudo hostnamectl set-hostname job2
+      - name: set hostname to daemon1
+        run: sudo hostnamectl set-hostname daemon1
+      - name: setup tailscale
+        run: |
+          curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+          curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+          sudo apt-get -y update
+          sudo apt-get -yqq install tailscale
       - run: sudo tailscale up --authkey ${{ secrets.tailscale_key }}
+      - name: setup icecc
+        run: |
+          sudo apt-get -yqq install icecc
+          sudo sed -i 's/ICECC_NETNAME=""/ICECC_NETNAME="act-test"/' /etc/icecc/icecc.conf
+          sudo sed -i 's/ICECC_SCHEDULER_HOST=""/ICECC_SCHEDULER_HOST="scheduler"/' /etc/icecc/icecc.conf
+          echo "/usr/libexec/icecc/bin" >> $GITHUB_PATH
+          sudo systemctl start iceccd.service
+      - run: sleep 300
+
+  daemon2:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: set hostname to daemon2
+        run: sudo hostnamectl set-hostname daemon2
+      - name: setup tailscale
+        run: |
+          curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+          curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+          sudo apt-get -y update
+          sudo apt-get -yqq install tailscale
+      - run: sudo tailscale up --authkey ${{ secrets.tailscale_key }}
+      - name: setup icecc
+        run: |
+          sudo apt-get -yqq install icecc
+          sudo sed -i 's/ICECC_NETNAME=""/ICECC_NETNAME="act-test"/' /etc/icecc/icecc.conf
+          sudo sed -i 's/ICECC_SCHEDULER_HOST=""/ICECC_SCHEDULER_HOST="scheduler"/' /etc/icecc/icecc.conf
+          echo "/usr/libexec/icecc/bin" >> $GITHUB_PATH
+          sudo systemctl start iceccd.service
       - run: sleep 300
