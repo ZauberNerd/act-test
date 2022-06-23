@@ -1,4 +1,4 @@
-name: CI
+name: CI on-test-pr-events
 
 on:
   pull_request:
