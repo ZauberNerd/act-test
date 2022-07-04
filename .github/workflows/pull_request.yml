@@ -14,13 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: |
-          echo $GITHUB_BASE_REF
-          echo $GITHUB_HEAD_REF
-          echo $GITHUB_REF
-          echo $GITHUB_REF_NAME
-          echo $GITHUB_REF_TYPE
-          echo $GITHUB_SHA
+      - run: echo $GITHUB_BASE_REF
+      - run: echo $GITHUB_HEAD_REF
+      - run: echo $GITHUB_REF
+      - run: echo $GITHUB_REF_NAME
+      - run: echo $GITHUB_REF_TYPE
+      - run: echo $GITHUB_SHA
       - run: git ls-remote
       - run: echo merge_commit_sha ${{ github.event.pull_request.merge_commit_sha }}
-      - run: git fetch origin +merge:refs/pull/${{ github.event.pull_request.number }}/merge
+      - run: |
+          git fetch origin +refs/pull/${{ github.event.pull_request.number }}/merge:merge
+          git show merge
