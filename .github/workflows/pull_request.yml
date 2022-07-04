@@ -23,4 +23,4 @@ jobs:
           echo $GITHUB_SHA
       - run: git ls-remote
       - run: echo merge_commit_sha ${{ github.event.pull_request.merge_commit_sha }}
-      - run: git fetch +merge:refs/pull/${{ github.event.pull_request.number }}/merge
+      - run: git fetch origin +merge:refs/pull/${{ github.event.pull_request.number }}/merge
