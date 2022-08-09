@@ -1,4 +1,4 @@
-name: Test Pull Request events
+name: Cron scheduled
 
 on:
   schedule:
