@@ -6,8 +6,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: Action Test
+    container:
+      image: ubuntu:22.04
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
     steps:
-      - uses: saucelabs/sauce-connect-action@v2
+      - run: apt-get update -qq && apt-get -yqq install docker.io
+      - uses: ZauberNerd/sauce-connect-action@tool-cache
         with:
           username: ${{ secrets.SAUCE_USERNAME }}
           accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
