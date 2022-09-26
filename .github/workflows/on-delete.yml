@@ -1,0 +1,9 @@
+name: run on delete
+
+on: delete
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo done
