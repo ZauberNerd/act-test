@@ -1,7 +1,7 @@
 name: test scheduler
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/10 * * * *"
 jobs:
   test:
     runs-on: ubuntu-latest
