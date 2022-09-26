@@ -4,6 +4,7 @@ on:
   - delete
   - discussion
   - issues
+  - pull_request_target
 
 jobs:
   test:
