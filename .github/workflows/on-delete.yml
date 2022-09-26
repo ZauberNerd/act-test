@@ -1,6 +1,9 @@
-name: run on delete
+name: run on events... :-)
 
-on: delete
+on:
+  - delete
+  - discussion
+  - issues
 
 jobs:
   test:
