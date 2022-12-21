@@ -1,0 +1,13 @@
+name: callable
+on:
+  workflow_call:
+    inputs:
+      name:
+        type: string
+
+jobs:
+  called_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: callable name
+        run: echo hello from called workflow ${{ inputs.name }}

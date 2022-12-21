@@ -1,0 +1,9 @@
+name: caller
+on: push
+jobs:
+  test1:
+    name: calling name
+    uses: ./.github/workflows/callable.yml
+  test2:
+    name: calling name
+    uses: ./.github/workflows/callable.yml
