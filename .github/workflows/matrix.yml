@@ -4,9 +4,7 @@ on: push
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        a: [1, 2]
-        b: [8, 9]
     steps:
-      - run: "echo a:${{ matrix.a }}, b: ${{ matrix.b }}"
+      - run: uname -a
+      - run: cat /etc/os-release
+      - run: node -v
