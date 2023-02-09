@@ -2,7 +2,7 @@ name: on complete
 
 on:
   workflow_run:
-    #workflows: [Matrix tests]
+    workflows: [Matrix tests]
     types: [completed]
 
 jobs:
