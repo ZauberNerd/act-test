@@ -1,0 +1,15 @@
+name: on complete
+
+on:
+  workflow_run:
+    #workflows: [Matrix tests]
+    types: [completed]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "yolo"
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
