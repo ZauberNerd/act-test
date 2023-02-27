@@ -3,7 +3,7 @@ name: Workflow B
 on:
   workflow_run:
     workflows:
-      - "Worflow A"
+      - "Workflow A"
     types:
       - completed
 
