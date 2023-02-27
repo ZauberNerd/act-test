@@ -7,4 +7,4 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - run: sleep 80 && echo "done"
+      - run: echo '${{ toJSON(github) }}'
