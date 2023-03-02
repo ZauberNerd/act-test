@@ -24,3 +24,4 @@ jobs:
       - run: ls -la /github/workflow
       - run: ls -la /__w/_temp
       - run: ls -la /__w/_actions
+      - run: env | sort
