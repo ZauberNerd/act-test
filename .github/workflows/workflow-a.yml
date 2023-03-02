@@ -10,3 +10,10 @@ jobs:
       - run: echo "ok"
       - run: |
           gh workflow run workflow-b.yml --ref="${{ github.ref }}"
+
+  container-test:
+    runs-on: ubuntu-latest
+    container: ubuntu:latest
+    steps:
+      - run: which gh
+      - run: mount
