@@ -7,4 +7,6 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - run: sleep 80 && echo "ok"
+      - run: echo "ok"
+      - run: |
+          gh workflow run workflow-b.yml --ref="${{ github.ref }}"

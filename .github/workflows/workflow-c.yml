@@ -1,0 +1,14 @@
+name: Workflow C
+
+on:
+  workflow_run:
+    workflows:
+      - "Workflow B"
+    types:
+      - "completed"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo '${{ toJSON(github) }}'
