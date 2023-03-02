@@ -17,3 +17,10 @@ jobs:
     steps:
       - run: which gh || true
       - run: mount
+      - run: ls -la /__w
+      - run: ls -la /__e
+      - run: ls -la /__t
+      - run: ls -la /github/home
+      - run: ls -la /github/workflow
+      - run: ls -la /__w/_temp
+      - run: ls -la /__w/_actions
