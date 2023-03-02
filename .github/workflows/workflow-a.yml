@@ -15,5 +15,5 @@ jobs:
     runs-on: ubuntu-latest
     container: ubuntu:latest
     steps:
-      - run: which gh
+      - run: which gh || true
       - run: mount
