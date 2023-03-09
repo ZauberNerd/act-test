@@ -1,8 +1,9 @@
-name: Workflow B
+name: also on release
 
 on:
   push:
   pull_request:
+  release:
 
 jobs:
   run:
