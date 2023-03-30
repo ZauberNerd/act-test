@@ -11,7 +11,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - run: echo '${{ toJSON(github) }}'
+      - run: echo '${{ toJSON(github.event.pull_request) }}'
       - name: GraphQL api response
         run: |
           gh api graphql -F owner='${{ github.repository_owner }}' \
