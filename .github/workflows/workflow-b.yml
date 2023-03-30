@@ -11,6 +11,8 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ${{ github.ref }}
+      - run: echo ${{ github.sha }}
       - run: echo '${{ toJSON(github.event.pull_request) }}'
       # - name: GraphQL api response
       #   run: |
