@@ -1,34 +1,35 @@
-name: also on release
+name: zstd bug reproducer
 
-on:
-  pull_request:
-    types:
-      - closed
-      - opened
-      - synchronize
+on: push
 
 jobs:
-  run:
-    runs-on: ubuntu-latest
+  populate-cache:
+    runs-on: ubuntu-20.04
     steps:
-      - run: echo '${{ toJSON(github.event.pull_request) }}'
-      # - name: GraphQL api response
-      #   run: |
-      #     gh api graphql -F owner='${{ github.repository_owner }}' \
-      #       -F repo='${{ github.event.repository.name }}' \
-      #       -F number='${{ github.event.pull_request.number }}' \
-      #       -f query='
-      #       query ($owner: String!, $repo: String!, $number: Int!) {
-      #         repository(owner:$owner, name:$repo) {
-      #           pullRequest(number:$number) {
-      #             state,
-      #             mergeable
-      #             potentialMergeCommit {
-      #               oid
-      #             }
-      #           }
-      #         }
-      #       }
-      #     '
-      #   env:
-      #     GH_TOKEN: ${{ github.token }}
+      - run: zstd --version
+      - run: env | sort
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/test-cache
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     cache: yarn
+      #     node-version: 18
+      # - run: yarn install
+
+  use-cache:
+    runs-on: ubuntu-latest
+    container: ubuntu:latest
+    needs: [populate-cache]
+    steps:
+      - run: env | sort
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/test-cache
+      # - run: apt-get -qq update && apt-get -yqq install zstd npm
+      # - run: zstd --version
+      # - run: npm i -g yarn
+      # - uses: actions/checkout@v3
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     cache: yarn
+      #     node-version: 18
+      # - run: yarn install
