@@ -1,34 +1,9 @@
-name: also on release
+name: zstd bug reproducer
 
-on:
-  pull_request:
-    types:
-      - closed
-      - opened
-      - synchronize
+on: push
 
 jobs:
-  run:
+  populate-cache:
     runs-on: ubuntu-latest
     steps:
-      - run: echo '${{ toJSON(github.event.pull_request) }}'
-      # - name: GraphQL api response
-      #   run: |
-      #     gh api graphql -F owner='${{ github.repository_owner }}' \
-      #       -F repo='${{ github.event.repository.name }}' \
-      #       -F number='${{ github.event.pull_request.number }}' \
-      #       -f query='
-      #       query ($owner: String!, $repo: String!, $number: Int!) {
-      #         repository(owner:$owner, name:$repo) {
-      #           pullRequest(number:$number) {
-      #             state,
-      #             mergeable
-      #             potentialMergeCommit {
-      #               oid
-      #             }
-      #           }
-      #         }
-      #       }
-      #     '
-      #   env:
-      #     GH_TOKEN: ${{ github.token }}
+      - run: echo "hello world"
