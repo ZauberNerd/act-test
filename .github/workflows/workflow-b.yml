@@ -6,4 +6,6 @@ jobs:
   populate-cache:
     runs-on: ubuntu-20.04
     steps:
-      - run: echo $GITHUB_REF
+      - run: echo $CONTEXT
+        env:
+          CONTEXT: ${{ toJson(github) }}
