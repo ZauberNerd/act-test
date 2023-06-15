@@ -1,0 +1,12 @@
+name: push tags branchs
+
+on:
+  push:
+    tags:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hi tag
