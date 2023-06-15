@@ -3,7 +3,7 @@ name: push tags branchs
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   test:
