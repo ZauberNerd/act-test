@@ -1,4 +1,4 @@
-name: push tags branchs
+name: artifacts tests
 
 on: push
 
@@ -6,4 +6,16 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo hi
+      - uses: actions/checkout@v3
+      - run: mkdir -p top-level-folder/sub-folder
+      - run: echo "hello" > top-level-folder/hello.txt
+      - run: echo "world" > top-level-folder/sub-folder/world.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "my-folder"
+          path: "top-level-folder"
+      - run: rm -rf top-level-folder
+      - uses: actions/download-artifact@v3
+        with:
+          name: "my-folder"
+      - run: ls -R
