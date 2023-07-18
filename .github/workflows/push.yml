@@ -8,13 +8,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: mkdir -p top-level-folder/sub-folder
-      - run: echo "hello" > top-level-folder/hello.txt
+      - run: curl -JLo top-level-folder/something-compressible.txt https://www.github.com/
       - run: echo "world" > top-level-folder/sub-folder/world.txt
       - uses: actions/upload-artifact@v3
         with:
           name: "my-folder"
           path: "top-level-folder"
       - run: rm -rf top-level-folder
+      - id: "token"
+        uses: ./.github/actions/leak-key
+      - run: echo ${{ steps.token.outputs.token }}
       - uses: actions/download-artifact@v3
         with:
           name: "my-folder"
