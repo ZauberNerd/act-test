@@ -1,8 +1,8 @@
 name: packages
 
 on:
-  push:
-    branches: ['some-other-branch']
+  release:
+    types: [published]
 
 env:
   REGISTRY: ghcr.io
