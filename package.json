@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/ZauberNerd/act-test.git"
   },
-  "version": "5.0.0",
+  "version": "6.0.0",
   "main": "index.js",
   "author": "ZauberNerd <zaubernerd@zaubernerd.de>",
   "license": "MIT",
