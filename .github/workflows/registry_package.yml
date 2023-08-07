@@ -1,6 +1,8 @@
 name: refsha
 
-on: registry_package
+on:
+  registry_package:
+    types: [published]
 
 jobs:
   get-ref:
