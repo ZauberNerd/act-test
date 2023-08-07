@@ -1,0 +1,9 @@
+name: refsha
+
+on: registry_package
+
+jobs:
+  get-ref:
+    runs-on: ubuntu-latest
+    steps:
+      - run: env
