@@ -1,40 +1,23 @@
-name: packages
+name: push
 
-on:
-  release:
-    types: [published]
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+on: push
 
 jobs:
-  build-and-push-image:
+  job-1:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+    strategy:
+      matrix:
+        version:
+          - version: "20.04"
+            release: "focal"
+          - version: "22.04"
+            release: "jammy"
+        arch:
+          - amd64
+          - arm64
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+      - run: |
+          echo "arch: ${{ matrix.arch }}, version: ${{ matrix.version.version }}, release: ${{ matrix.version.release }}"
