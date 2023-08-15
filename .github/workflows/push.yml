@@ -8,10 +8,8 @@ jobs:
     strategy:
       matrix:
         version:
-          - version: "20.04"
-            release: "focal"
-          - version: "22.04"
-            release: "jammy"
+          - ["20.04", "focal"]
+          - ["22.04", "jammy"]
         arch:
           - amd64
           - arm64
