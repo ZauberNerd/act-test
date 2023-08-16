@@ -1,21 +1,11 @@
 name: push
 
-on: push
+on:
+  workflow_dispatch:
+  push:
 
 jobs:
   job-1:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version:
-          - ["20.04", "focal"]
-          - ["22.04", "jammy"]
-        arch:
-          - amd64
-          - arm64
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - run: |
-          echo "arch: ${{ matrix.arch }}, version: ${{ matrix.version.version }}, release: ${{ matrix.version.release }}"
+      - run: echo ${{ github.event.after }}
