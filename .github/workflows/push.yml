@@ -5,7 +5,6 @@ on:
 
 jobs:
   job-1:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-      - run: cat /etc/os-release
-      - run: node --version
+      - run: node -e 'console.log(process.execPath)'
