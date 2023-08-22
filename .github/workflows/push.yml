@@ -14,4 +14,5 @@ jobs:
         ports:
           - "80:80"
     steps:
+      - run: apt-get -qq update && apt-get -yqq install curl
       - run: curl -v http://nginx
