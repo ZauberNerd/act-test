@@ -6,15 +6,12 @@ on:
 jobs:
   job-1:
     runs-on: ubuntu-latest
+    container: 
+      image: "ubuntu:latest"
     services:
-      redis:
-        image: "redis:${{ 'latest' }}"
-        env:
-          REDIS_PASSWORD: "${{ 'password' }}"
+      nginx:
+        image: "nginx:latest"
         ports:
-          - "6379:${{ '6379' }}"
-        volumes:
-          - "redis:${{ '/data' }}"
-        options: --add-host ${{ 'host.docker.internal' }}:host-gateway
+          - "80:80"
     steps:
-      - run: echo "Hello, world!"
+      - run: curl -v http://nginx
