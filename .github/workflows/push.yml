@@ -29,15 +29,16 @@ jobs:
   test-linux-container:
     runs-on: ubuntu-latest
     needs: build
-    container: "${{ needs.build.outputs.IMAGE_NAME }}"
+    container:
+        image: "${{ needs.build.outputs.IMAGE_NAME }}"
+        options: --entrypoint /bin/bash
     services:
       nginx:
         image: "nginx:latest"
       other:
         image: "${{ needs.build.outputs.IMAGE_NAME }}"
     steps:
-      - run: sudo apt-get -qq update && sudo apt-get -yqq install curl
-      - run: curl -s http://nginx > /dev/null
+      - run: curl -sI http://nginx
 
   test-linux-host:
     runs-on: ubuntu-latest
@@ -51,4 +52,54 @@ jobs:
         image: "${{ needs.build.outputs.IMAGE_NAME }}"
     steps:
       - run: sudo apt-get -qq update && sudo apt-get -yqq install curl
-      - run: curl -s http://localhost > /dev/null
+      - run: curl -sI http://localhost
+
+  test-linux-docker:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker network create test
+      - uses: ./.github/actions/docker-run-action
+        with:
+          image: "nginx:latest"
+          args: "-p 80:80 --network=test --name nginx"
+      - run: docker run --rm --network=test curlimages/curl:latest -sI http://nginx
+      - run: docker run --rm --network=host curlimages/curl:latest -sI http://localhost
+
+  test-windows-docker:
+    runs-on: windows-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker network create test
+      - uses: ./.github/actions/docker-run-action
+        with:
+          image: "nginx:latest"
+          args: "--platform=linux -p 80:80 --network=test"
+      - run: docker run --rm --network=test curlimages/curl:latest -sI http://nginx
+      - run: docker run --rm --network=host curlimages/curl:latest -sI http://localhost
+
+  test-macos-docker:
+    runs-on: macos-latest
+    needs: build
+    steps:
+      - run: brew update && brew install docker colima
+      - run: colima delete && colima start --verbose
+      - name: colima logs
+        if: failure()
+        run: |
+          echo "::group::~/.lima/colima/serial*.log"
+          cat /Users/runner/.lima/colima/serial*.log
+          echo "::endgroup::"
+          echo "::group::~/.lima/colima/ha.stderr.log"
+          cat /Users/runner/.lima/colima/ha.stderr.log
+          echo "::endgroup::"
+      - uses: actions/checkout@v3
+      - run: docker network create test
+      - uses: ./.github/actions/docker-run-action
+        with:
+          image: "nginx:latest"
+          args: "-p 80:80 --network=test --name nginx"
+      - run: docker run --rm --network=test curlimages/curl:latest -sI http://nginx
+      - run: docker run --rm --network=host curlimages/curl:latest -sI http://localhost

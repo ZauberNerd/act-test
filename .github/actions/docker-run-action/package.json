@@ -1,0 +1,15 @@
+{
+  "name": "docker-run-action",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "esbuild ./src/start.js ./src/stop.js --bundle --platform=node --target=node18 --outdir=dist"
+  },
+  "devDependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/exec": "^1.1.1",
+    "@actions/io": "^1.1.3",
+    "esbuild": "^0.19.2"
+  }
+}

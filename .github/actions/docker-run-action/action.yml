@@ -1,0 +1,29 @@
+name: docker-run
+description: Manages a docker container service
+
+inputs:
+  dockerfile:
+    description: Path to a Dockerfile if the image should be build
+    required: false
+  image:
+    description: Docker image to run
+    required: true
+  args:
+    description: Arguments to pass to the image
+    required: false
+  command:
+    description: Command to pass to the image
+    required: false
+  detach:
+    description: Flag to run docker in the background (true by default)
+    required: false
+    default: "true"
+  pull:
+    description: Pull flag for docker run --pull "always" | "missing" | "never"
+    required: false
+    default: "missing"
+
+runs:
+  using: "node16"
+  main: "./dist/start.js"
+  post: "./dist/stop.js"
