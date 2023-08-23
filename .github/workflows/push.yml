@@ -10,22 +10,27 @@ jobs:
         image: "nginx:latest"
         ports:
           - "8080:80"
-    steps:
-      - run: sudo apt-get -qq update && sudo apt-get -yqq install curl
-      - run: sleep 10
-      - run: curl -v http://localhost:8080
-
-  job-2:
-    runs-on: ubuntu-latest
-    # https://docs.github.com/en/actions/using-containerized-services/about-service-containers#running-jobs-in-a-container
-    container:
-      image: "ubuntu:latest"
-    services:
-      nginx:
-        image: "nginx:latest"
+      other:
+        image: "ubuntu:latest"
         ports:
-          - "8080:80"
+          - "8081:80"
+        options: apt-get update -qq && apt-get -yqq install curl && curl -v http://nginx:80
     steps:
-      - run: apt-get -qq update && apt-get -yqq install curl
-      - run: sleep 10
-      - run: curl -v http://nginx:80
+      - run: sudo apt-get -qq update && sudo apt-get -yqq install curl net-tools
+      - run: netstat -tulpen
+      - run: curl -v http://localhost:8080
+      # - run: sleep 10
+
+  # job-2:
+  #   runs-on: ubuntu-latest
+  #   # https://docs.github.com/en/actions/using-containerized-services/about-service-containers#running-jobs-in-a-container
+  #   container:
+  #     image: "ubuntu:latest"
+  #   services:
+  #     nginx:
+  #       image: "nginx:latest"
+  #   steps:
+  #     - run: apt-get -qq update && apt-get -yqq install curl net-tools
+  #     - run: netstat -tulpen
+  #     - run: curl -v http://nginx:80
+  #     # - run: sleep 10
