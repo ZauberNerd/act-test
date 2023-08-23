@@ -9,7 +9,7 @@ jobs:
       contents: read
       packages: write
     outputs:
-      IMAGE_NAME: ${{ env.REPO }}
+      IMAGE_NAME: ${{ env.IMAGE_NAME }}
     steps:
       - uses: actions/checkout@v3
       - name: Log in to the Container registry
@@ -19,31 +19,31 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: set tag
-        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+        run: echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}:latest" >>${GITHUB_ENV}
       - name: Build and push Docker image
         id: build
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ env.REPO }}:latest
+          tags: ${{ env.IMAGE_NAME }}
 
   job-1:
     runs-on: ubuntu-latest
     needs: [build]
-    # services:
-    #   nginx:
-    #     image: "nginx:latest"
-    #     ports:
-    #       - "8080:80"
-    #   other:
-    #     image: "${{ needs.build.outputs.IMAGE_NAME }}"
+    services:
+      nginx:
+        image: "nginx:latest"
+        ports:
+          - "8080:80"
+      other:
+        image: "${{ needs.build.outputs.IMAGE_NAME }}"
     steps:
       - run: echo "${{ needs.build.outputs.IMAGE_NAME }}"
-      # - run: sudo apt-get -qq update && sudo apt-get -yqq install curl net-tools
-      # - run: netstat -tulpen
-      # - run: curl -v http://localhost:8080
-      # - run: sleep 10
+      - run: sudo apt-get -qq update && sudo apt-get -yqq install curl net-tools
+      - run: netstat -tulpen
+      - run: curl -v http://localhost:8080
+      - run: sleep 10
 
   # job-2:
   #   runs-on: ubuntu-latest
