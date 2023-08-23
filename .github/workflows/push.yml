@@ -9,7 +9,7 @@ jobs:
       contents: read
       packages: write
     outputs:
-      IMAGE_NAME: ${{ steps.build.outputs.imageid }}
+      IMAGE_NAME: ${{ env.REPO }}
     steps:
       - uses: actions/checkout@v3
       - name: Log in to the Container registry
