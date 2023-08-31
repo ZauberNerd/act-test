@@ -1,12 +1,29 @@
 name: push
 
-on:
-  workflow_dispatch:
-  push:
+on: push
 
 jobs:
   job-1:
     runs-on: ubuntu-latest
+    services:
+      nginx:
+        image: "nginx:latest"
+        ports:
+          - "8080:80"
     steps:
-      - run: echo foo
-      - run: echo ${{ github.event.after }}
+      - run: sudo apt-get -qq update && sudo apt-get -yqq install curl
+      - run: curl -v http://localhost:8080
+
+  job-2:
+    runs-on: ubuntu-latest
+    # https://docs.github.com/en/actions/using-containerized-services/about-service-containers#running-jobs-in-a-container
+    container:
+      image: "ubuntu:latest"
+    services:
+      nginx:
+        image: "nginx:latest"
+        ports:
+          - "8080:80"
+    steps:
+      - run: apt-get -qq update && apt-get -yqq install curl
+      - run: curl -v http://nginx:80
