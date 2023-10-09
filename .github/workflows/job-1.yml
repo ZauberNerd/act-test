@@ -1,0 +1,8 @@
+name: "job-1"
+
+on: workflow_call
+
+jobs:
+  job-2:
+    name: "job-2"
+    uses: "./.github/workflows/job-2.yml"

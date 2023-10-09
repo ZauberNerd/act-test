@@ -1,0 +1,10 @@
+name: "job-2"
+
+on: workflow_call
+
+jobs:
+  job-3:
+    name: "job-3"
+    runs-on: "ubuntu-latest"
+    steps:
+      - run: echo "job-3"
