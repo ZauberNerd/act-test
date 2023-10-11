@@ -5,4 +5,11 @@ on: push
 jobs:
   job-1:
     name: "job-1"
-    uses: "./.github/workflows/job-1.yml"
+    runs-on: ubuntu-latest
+    steps:
+      - run: which node-gyp || true
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: which node-gyp || true
