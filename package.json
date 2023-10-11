@@ -9,7 +9,7 @@
   "author": "ZauberNerd <zaubernerd@zaubernerd.de>",
   "license": "MIT",
   "devDependencies": {
-    "snappy": "7.2.2",
+    "snappy": "6.3.5",
     "typescript": "^5.0.4"
   },
   "engines": {
