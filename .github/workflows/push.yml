@@ -3,14 +3,17 @@ name: push
 on: push
 
 jobs:
-  job-1:
-    name: "job-1"
+  ubuntu-latest:
     runs-on: ubuntu-latest
     steps:
-      - run: which node-gyp || true
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: "package.json"
-      - run: yarn install
-      - run: which node-gyp || true
+      - run: node --version
+
+  ubuntu-22:
+    runs-on: ubuntu-22.04
+    steps:
+      - run: node --version
+
+  ubuntu-20:
+    runs-on: ubuntu-22.04
+    steps:
+      - run: node --version
